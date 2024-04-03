@@ -13,7 +13,7 @@ const schema = yup
     password2: yup.string().required("Password is required*"),
   })
   .required();
-const defaultValues = { 
+const defaultValues = {
   username: "",
   email: "",
   password: "",
@@ -46,7 +46,6 @@ function AddInfo() {
     } else {
       setState([...state, data]);
     }
-
     reset(defaultValues);
   };
 
@@ -153,20 +152,21 @@ function AddInfo() {
                   <td>{item.username}</td>
                   <td>{item.email}</td>
                   <td>{item.password}</td>
-                  <td className="border-start d-flex">
+                  <td className="border-start row justify-content-between me-2">
                     <button
-                      className="btn btn-info"
+                      className="btn btn-warning col-5 text-center fw-bold "
                       type="button"
                       onClick={() => handleUpdate({ ...item, index })}
                     >
-                      update
+                      <span className="me-1  fas fa-edit"></span>
                     </button>
+
                     <button
                       type="button"
-                      className="btn btn-danger"
+                      className="btn btn-danger col-5 fw-bold "
                       onClick={() => handleDelete(item)}
                     >
-                      Delete
+                      <span className="fa-solid fa-trash me-1"></span>
                     </button>
                   </td>
                 </tr>

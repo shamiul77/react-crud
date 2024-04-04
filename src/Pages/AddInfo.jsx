@@ -23,8 +23,6 @@ function AddInfo() {
   const [state, setState] = useState([]);
   const [update, setUpdate] = useState(false);
   const [defaultValueState, setDefaultValueState] = useState(defaultValues);
-
-  console.log({ defaultValueState });
   const {
     watch,
     control,
@@ -38,12 +36,11 @@ function AddInfo() {
 
   const onSubmit = (data) => {
     if (update) {
-      const filterDataWithoutOldUpdateData = state.filter(
-        (_item, index) => index !== data.index
-      );
-      setState([...filterDataWithoutOldUpdateData, data]);
+      const updateData = state.map((item)=> (item.id === data.id ? data : item))
+      setState(updateData);
       setUpdate(false);
     } else {
+      data["id"]=Math.random() 
       setState([...state, data]);
     }
     reset(defaultValues);
@@ -53,9 +50,9 @@ function AddInfo() {
     setState(state.filter((item) => item !== itemToDelete));
   };
 
-  const handleUpdate = (itemToUpdate) => {
+  const handleUpdate = (item) => {
     setUpdate(true);
-    setDefaultValueState(itemToUpdate);
+    setDefaultValueState(item);
   };
 
   useEffect(() => {
@@ -120,6 +117,9 @@ function AddInfo() {
                 placeholder="Confirm your password"
                 type="password"
                 {...field}
+                onChange={(e)=>{
+                  field.onChange(e.target.value)
+                }}
               />
             )}
           />
@@ -146,9 +146,9 @@ function AddInfo() {
             </tr>
           </thead>
           <tbody>
-            {state?.map((item, index) => {
+            {state?.map((item, key) => {
               return (
-                <tr>
+                <tr key={key}>
                   <td>{item.username}</td>
                   <td>{item.email}</td>
                   <td>{item.password}</td>
@@ -156,7 +156,7 @@ function AddInfo() {
                     <button
                       className="btn btn-warning col-5 text-center fw-bold "
                       type="button"
-                      onClick={() => handleUpdate({ ...item, index })}
+                      onClick={() => handleUpdate({...item})}
                     >
                       <span className="me-1  fas fa-edit"></span>
                     </button>
@@ -179,3 +179,5 @@ function AddInfo() {
   );
 }
 export default AddInfo;
+
+
